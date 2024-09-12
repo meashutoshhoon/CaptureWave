@@ -1,0 +1,100 @@
+[versions]
+androidGradlePlugin = "8.6.0"
+androidxComposeBom = "2024.08.00-alpha01"
+androidxCore = "1.13.1"
+androidMaterial = "1.12.0"
+androidxAppCompat = "1.7.0"
+androidxActivity = "1.9.2"
+androidxSplashscreen = "1.0.1"
+
+androidxLifecycle = "2.8.5"
+androidxNavigation = "2.8.0"
+lifecycleRuntimeKtx = "2.8.5"
+
+androidxEspresso = "3.6.1"
+androidxTestExt = "1.2.1"
+
+junit4 = "4.13.2"
+
+kotlin = "2.0.0"
+
+kotlinxSerializationJson = "1.6.2"
+okhttp = "5.0.0-alpha.10"
+
+documentfile = "1.0.1"
+exoplayer = "1.4.1"
+
+mmkv = "1.3.2"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+android-material = { group = "com.google.android.material", name = "material", version.ref = "androidMaterial" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxSplashscreen" }
+
+androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycleRuntimeKtx" }
+
+androidx-compose-bom = { group = "dev.chrisbanes.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics" }
+
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+
+androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
+junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+androidx-media3-exoplayer-dash = { group = "androidx.media3", name = "media3-exoplayer-dash", version.ref = "exoplayer" }
+androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "exoplayer" }
+exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "exoplayer" }
+
+androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
+
+mmkv = { group = "com.tencent", name = "mmkv", version.ref = "mmkv" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+[bundles]
+
+androidxCompose = ["androidx-compose-ui",
+    "androidx-compose-ui-tooling-preview",
+    "androidx-compose-material-iconsExtended",
+    "androidx-compose-material3",
+    "androidx-compose-material3-windowSizeClass",
+    "androidx-compose-foundation",
+    "androidx-navigation-compose",
+    "androidx-compose-animation",
+    "androidx-animation-graphics"
+]
+
+exoplayer = ["exoplayer",
+    "androidx-media3-exoplayer-dash",
+    "androidx-media3-ui"]
+
+core = ["androidx-activity-compose",
+    "androidx-splashscreen",
+    "android-material",
+    "androidx-appcompat",
+    "androidx-core-ktx"]

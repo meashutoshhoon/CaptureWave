@@ -1,0 +1,137 @@
+<resources>
+    <string name="app_name">CaptureWave</string>
+    <string name="recordings">Recordings</string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
+    <string name="rename">Rename</string>
+    <string name="file_name">Filename</string>
+    <string name="delete">Delete</string>
+    <string name="irreversible">Are you sure? This can\'t be undone!</string>
+    <string name="nothing_here">Nothing here.</string>
+    <string name="general_settings">General</string>
+    <string name="open_settings">Open settings</string>
+    <string name="multiselect_mode">Multiselect mode</string>
+    <string name="edit">Edit</string>
+    <string name="confirm">Confirm</string>
+    <string name="dismiss">Cancel</string>
+
+    <!--  Settings  -->
+    <string name="general_settings_desc">Screen Record, naming pattern</string>
+    <string name="about_page">Version, changelog, credits</string>
+    <string name="theme_settings">System, dark theme, light theme</string>
+    <string name="download_directory">Saving directory</string>
+    <string name="download_directory_desc">Select where to store videos and audio files</string>
+    <string name="audio_format_desc">Sample rate, Bitrate, format</string>
+    <string name="screen_recorder_desc">Bitrate, format, device</string>
+    <string name="credits">Credits</string>
+    <string name="naming_pattern_dialog_desc">Change the output file naming pattern</string>
+    <string name="audio_device">Audio Devices</string>
+    <string name="audio_device_desc">Choose the audio device to record sound while screen recording.</string>
+    <string name="audio_device_desc2">Choose the audio device to record sound while audio recording.</string>
+    <string name="video_format">Video Format</string>
+    <string name="video_format_desc">Choose the output file\'s video format.</string>
+    <string name="bitrate_desc">Choose the bitrate for the screen recording.</string>
+    <string name="audio_format_desc2">Choose the output file\'s audio format.</string>
+    <string name="sample_rate_desc">Choose the sample rate for the audio file.</string>
+    <string name="audio_type">Audio Type</string>
+    <string name="audio_type_desc">Choose the audio type for recording.</string>
+
+    <!--Display Page-->
+    <string name="dark_theme">Dark theme</string>
+    <string name="follow_system">System</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="additional_settings">Additional settings</string>
+    <string name="high_contrast">High contrast dark theme</string>
+
+    <!-- Action -->
+    <string name="record_sound">Record sound</string>
+    <string name="screen_recorder">Screen recorder</string>
+    <string name="recording_screen">Recording screen …</string>
+    <string name="record_screen">Record screen</string>
+    <string name="recording_audio">Recording audio …</string>
+    <string name="stop">Stop</string>
+    <string name="share">Share</string>
+    <string name="open">Open</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="active_recording">Active recording</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="recording_finished">Recording finished</string>
+    <string name="record">Record</string>
+    <string name="play">Play</string>
+    <string name="back">Back</string>
+    <!-- Sort order -->
+    <string name="sort">Sort</string>
+    <string name="alphabetic">Alphabetic</string>
+    <string name="modified">Modified</string>
+    <string name="alphabetic_rev">Alphabetic (reversed)</string>
+    <string name="size">Size</string>
+    <string name="size_rev">Size (reversed)</string>
+    <string name="modified_rev">Modified (reversed)</string>
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="options">Options</string>
+    <string name="directory">Directory</string>
+    <string name="choose_dir">Choose directory</string>
+    <string name="audio_format">Audio format</string>
+    <string name="microphone">Microphone</string>
+    <string name="no_audio">No audio</string>
+    <string name="sample_rate">Sample rate</string>
+    <string name="bitrate">Bitrate</string>
+    <string name="auto">Auto</string>
+    <string name="default_audio">Default</string>
+    <string name="camcorder">Camcorder</string>
+    <string name="unprocessed">Unprocessed</string>
+    <string name="mono">Mono</string>
+    <string name="stereo">Stereo</string>
+    <string name="lossless_audio">Lossless audio recorder (WAV)</string>
+    <string name="lossless_audio_desc">Note that other audio specific options won\'t apply during use.</string>
+    <string name="naming_pattern">Naming pattern</string>
+    <string name="naming_pattern_desc">%d: Date, %t: Time, %s: Epoch seconds, %m: Epoch millis</string>
+    <string name="check_for_updates">Check for updates</string>
+    <string name="check_for_updates_desc">Automatically check for the latest version on GitHub</string>
+    <string name="update_channel_desc">Install pre-release builds to preview new features and changes.\n\nThere will be some instability in these versions, so please don\'t hesitate to give us feedback if you experience any problems to help us improve the app for the future.</string>
+    <string name="update_channel">Update channel</string>
+    <string name="auto_update">Auto update</string>
+    <string name="enable_auto_update">Enable auto update</string>
+    <string name="stable_channel">Stable</string>
+    <string name="pre_release_channel">Preview</string>
+    <string name="app_up_to_date">The current version is up to date</string>
+    <string name="app_update_failed">Failed to update to the latest version</string>
+    <string name="update">Update</string>
+    <!-- About -->
+    <string name="about">About</string>
+    <string name="source_code">Source code</string>
+    <string name="author">Author</string>
+    <string name="translation">Translation</string>
+    <string name="delete_all">Delete all</string>
+    <!-- Themes -->
+    <string name="theme">Theme</string>
+    <string name="system">System</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+    <string name="screen_recorder_annotation">Screen Record Annotation</string>
+    <string name="screen_recorder_annotation_desc">Show annotation tool during screen recording</string>
+    <string name="amoled_dark">Black</string>
+    <!-- Other -->
+    <string name="default_sort">Default</string>
+    <string name="audio_visualizer_timestamps">Audio visualizer timestamps</string>
+    <string name="audio_visualizer_timestamps_description">Show timestamps in the audio visualizer timeline.</string>
+    <string name="trim">Trim</string>
+    <string name="start_trimming">Start Trimming</string>
+    <string name="stop_timestamp">Stop:</string>
+    <string name="not_set">Not Set</string>
+    <string name="start_timestamp">Start:</string>
+    <string name="select_trim_range">Select Trim Range</string>
+    <string name="trim_failed">Trim Failed</string>
+    <string name="trimming">Trimming…</string>
+    <string name="trim_successful">Trim Successful</string>
+    <string name="cant_access_selected_folder">Can\'t access selected folder!</string>
+    <string name="draw_mode">Draw Mode</string>
+    <string name="erase_mode">Erase Mode</string>
+    <string name="no_sufficient_permissions">No sufficient permissions to start recording</string>
+    <string name="unknown_error_title">Oops! Something went wrong</string>
+    <string name="copy_and_exit">Copy and exit</string>
+</resources>
