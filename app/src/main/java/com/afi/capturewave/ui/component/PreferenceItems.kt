@@ -49,7 +49,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.afi.capturewave.R
+import com.afi.capturewave.ui.common.LocalFixedColorRoles
+import com.afi.capturewave.ui.theme.FixedAccentColors
 import com.afi.capturewave.ui.theme.applyOpacity
+import com.afi.capturewave.ui.theme.harmonizeWithPrimary
 import com.afi.capturewave.ui.theme.preferenceTitle
 
 private const val horizontal = 8
@@ -61,7 +64,6 @@ private val PreferenceTitleVariant: TextStyle
 private val PreferenceTitle
     @Composable get() = MaterialTheme.typography.titleMedium
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PreferenceItem(
     title: String,
@@ -141,10 +143,8 @@ fun PreferenceItem(
             }
         }
     }
-
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PreferenceItemVariant(
     modifier: Modifier = Modifier,
@@ -504,7 +504,7 @@ fun PreferencesCautionCard(
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 12.dp)
             .clip(MaterialTheme.shapes.extraLarge)
-            .background(MaterialTheme.colorScheme.errorContainer)
+            .background(MaterialTheme.colorScheme.errorContainer.harmonizeWithPrimary())
             .clickable { onClick() }
             .padding(horizontal = 12.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -516,7 +516,7 @@ fun PreferencesCautionCard(
                 modifier = Modifier
                     .padding(start = 8.dp, end = 16.dp)
                     .size(24.dp),
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.error.harmonizeWithPrimary()
 
             )
         }
@@ -531,11 +531,11 @@ fun PreferencesCautionCard(
                     text = title,
                     maxLines = 1,
                     style = PreferenceTitleVariant,
-                    color = colorScheme.onErrorContainer
+                    color = colorScheme.onErrorContainer.harmonizeWithPrimary()
                 )
                 if (description != null) Text(
                     text = description,
-                    color = colorScheme.onErrorContainer,
+                    color = colorScheme.onErrorContainer.harmonizeWithPrimary(),
                     maxLines = 2, overflow = TextOverflow.Ellipsis,
                     style = typography.bodyMedium,
                 )
@@ -551,8 +551,8 @@ fun PreferencesHintCard(
     title: String = "Title ".repeat(2),
     description: String? = "Description text ".repeat(3),
     icon: ImageVector? = Icons.Outlined.Translate,
-    containerColor: Color = MaterialTheme.colorScheme.secondary,
-    contentColor: Color = MaterialTheme.colorScheme.onSecondary,
+    containerColor: Color = LocalFixedColorRoles.current.secondaryFixed,
+    contentColor: Color = LocalFixedColorRoles.current.onSecondaryFixed,
     onClick: () -> Unit = {},
 ) {
     Row(
@@ -657,9 +657,7 @@ fun PreferenceSwitchWithContainer(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-@Preview
 fun TemplateItem(
     label: String = "",
     template: String? = null,

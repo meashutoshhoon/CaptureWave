@@ -52,7 +52,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.afi.capturewave.BuildConfig
 import com.afi.capturewave.R
 import com.afi.capturewave.ui.common.HapticFeedback.slightHapticFeedback
@@ -66,8 +65,7 @@ const val releases = "https://github.com/meashutoshhoon/CaptureWave/releases"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutPage(
-    onNavigateBack: () -> Unit,
-    navController: NavHostController
+    onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
     fun openUrl(url: String) {
@@ -179,7 +177,7 @@ fun AboutPage(
                             backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                         ) {
                             view.slightHapticFeedback()
-                            navController.navigate(Route.UPDATE) { launchSingleTop = true }
+                            onNavigateTo(Route.UPDATE)
                         })
                         Spacer(modifier = Modifier.width(16.dp))
 
@@ -188,7 +186,7 @@ fun AboutPage(
                             backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
                         ) {
                             view.slightHapticFeedback()
-                            navController.navigate(Route.CREDITS) { launchSingleTop = true }
+                            onNavigateTo(Route.CREDITS)
                         })
                         Spacer(modifier = Modifier.width(16.dp))
                     }
@@ -196,8 +194,6 @@ fun AboutPage(
             }
         }
     })
-
-
 }
 
 @Immutable

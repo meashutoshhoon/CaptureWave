@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import com.afi.capturewave.ui.common.LocalFixedColorRoles
 
 private val DialogVerticalPadding = PaddingValues(vertical = 24.dp)
 private val IconPadding = PaddingValues(bottom = 16.dp)
@@ -145,7 +146,7 @@ fun CWDialog(
 }
 
 @Composable
-fun VidToolDialogButtonVariant(
+fun CWDialogButtonVariant(
     modifier: Modifier = Modifier,
     shape: Shape = MiddleButtonShape,
     text: String,
@@ -157,7 +158,7 @@ fun VidToolDialogButtonVariant(
                 .clickable(onClick = onClick)
                 .fillMaxWidth()
                 .height(48.dp),
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = LocalFixedColorRoles.current.secondaryFixed,
             shape = shape
         ) {
 
@@ -165,7 +166,7 @@ fun VidToolDialogButtonVariant(
         Text(
             text = text,
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = LocalFixedColorRoles.current.onSecondaryFixed,
             modifier = Modifier.align(Alignment.Center)
         )
     }

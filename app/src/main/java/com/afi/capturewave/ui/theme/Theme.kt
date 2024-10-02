@@ -5,80 +5,96 @@ import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProvideTextStyle
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDirection
+import com.google.android.material.color.MaterialColors
+import com.afi.capturewave.ui.common.LocalFixedColorRoles
+import com.kyant.monet.LocalTonalPalettes
+import com.kyant.monet.dynamicColorScheme
 
 fun Color.applyOpacity(enabled: Boolean): Color {
     return if (enabled) this else this.copy(alpha = 0.62f)
 }
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80, secondary = PurpleGrey80, tertiary = Pink80
-)
+@Composable
+@ReadOnlyComposable
+fun Color.harmonizeWith(other: Color) =
+    Color(MaterialColors.harmonize(this.toArgb(), other.toArgb()))
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40, secondary = PurpleGrey40, tertiary = Pink40
-)
-
-private val AmoledDarkColorScheme = darkColorScheme(
-    primary = Color(0xFFEE665B), background = Color(0xFF000000), onPrimary = Color(0xFFFFFFFF)
-)
+@Composable
+@ReadOnlyComposable
+fun Color.harmonizeWithPrimary(): Color =
+    this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
 
 @Composable
 fun CaptureWaveTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    amoledDark: Boolean = false,
-    content: @Composable () -> Unit
+    isHighContrastModeEnabled: Boolean = false,
+    content: @Composable () -> Unit,
 ) {
-
     val view = LocalView.current
 
     LaunchedEffect(darkTheme) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (darkTheme) {
                 view.windowInsetsController?.setSystemBarsAppearance(
-                    0, APPEARANCE_LIGHT_STATUS_BARS)
+                    0,
+                    APPEARANCE_LIGHT_STATUS_BARS,
+                )
             } else {
                 view.windowInsetsController?.setSystemBarsAppearance(
-                    APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS)
+                    APPEARANCE_LIGHT_STATUS_BARS,
+                    APPEARANCE_LIGHT_STATUS_BARS,
+                )
             }
         }
     }
 
-    val colorScheme = when {
-        amoledDark && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            dynamicDarkColorScheme(context).copy(background = Color.Black)
+    val colorScheme =
+        dynamicColorScheme(!darkTheme).run {
+            if (isHighContrastModeEnabled && darkTheme)
+                copy(
+                    surface = Color.Black,
+                    background = Color.Black,
+                    surfaceContainerLowest = Color.Black,
+                    surfaceContainerLow = surfaceContainerLowest,
+                    surfaceContainer = surfaceContainerLow,
+                    surfaceContainerHigh = surfaceContainerLow,
+                    surfaceContainerHighest = surfaceContainer,
+                )
+            else this
         }
 
-        amoledDark -> AmoledDarkColorScheme
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-    ProvideTextStyle(
-        value =
+    val textStyle =
         LocalTextStyle.current.copy(
-            lineBreak = LineBreak.Paragraph, textDirection = TextDirection.Content)) {
+            lineBreak = LineBreak.Paragraph,
+            textDirection = TextDirection.Content,
+        )
+
+    val tonalPalettes = LocalTonalPalettes.current
+
+    CompositionLocalProvider(
+        LocalFixedColorRoles provides FixedColorRoles.fromTonalPalettes(tonalPalettes),
+        LocalTextStyle provides textStyle,
+    ) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,
-            content = content)
+            shapes = Shapes,
+            content = content,
+        )
     }
+}
+
+@Composable
+@Deprecated("Use SealTheme instead", replaceWith = ReplaceWith("SealTheme(content)"))
+fun PreviewThemeLight(content: @Composable () -> Unit) {
+    CaptureWaveTheme(darkTheme = false, content = content)
 }

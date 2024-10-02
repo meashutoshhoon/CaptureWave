@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -11,11 +13,13 @@ plugins {
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
 
 android {
+    compileSdk = 35
+
     if (keystorePropertiesFile.exists()) {
         val keystoreProperties = Properties()
         keystoreProperties.load(FileInputStream(keystorePropertiesFile))
         signingConfigs {
-            getByName("debug") {
+            create("githubPublish") {
                 keyAlias = keystoreProperties["keyAlias"].toString()
                 keyPassword = keystoreProperties["keyPassword"].toString()
                 storeFile = file(keystoreProperties["storeFile"]!!)
@@ -24,20 +28,42 @@ android {
         }
     }
 
-    compileSdk = 34
+    buildFeatures { buildConfig = true }
 
     defaultConfig {
         applicationId = "com.afi.capturewave"
         minSdk = 21
-        targetSdk = 34
-        versionCode = 5
-        versionName = rootProject.extra["versionName"] as String
+        targetSdk = 35
+        versionCode = 6
 
+        versionName = rootProject.extra["versionName"] as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
+        vectorDrawables { useSupportLibrary = true }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("githubPublish")
+            }
+        }
+        debug {
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("githubPublish")
+            }
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            resValue("string", "app_name", "CaptureWave Debug")
         }
     }
+
+    lint { disable.addAll(listOf("MissingTranslation", "ExtraTranslation", "MissingQuantity")) }
 
     applicationVariants.all {
         outputs.all {
@@ -46,48 +72,19 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            )
-            if (keystorePropertiesFile.exists()) {
-                signingConfig = signingConfigs.getByName("debug")
-            }
-        }
+    kotlinOptions { freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn" }
 
-        debug {
-            if (keystorePropertiesFile.exists()) {
-                signingConfig = signingConfigs.getByName("debug")
-            }
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
-            resValue("string", "app_name", "VidTool Debug")
-        }
-    }
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
-    }
-
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildFeatures {
-        buildConfig = true
-    }
+    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
+    androidResources { generateLocaleConfig = true }
 
     namespace = "com.afi.capturewave"
 }
 
-kotlin {
-    jvmToolchain(21)
-}
+kotlin { jvmToolchain(21) }
 
 dependencies {
+
+    implementation(project(":color"))
 
     //Core libs for the app
     implementation(libs.bundles.core)
@@ -100,12 +97,10 @@ dependencies {
     //Material UI
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidxCompose)
+    implementation(libs.bundles.accompanist)
 
-    // ExoPlayer
-    implementation(libs.bundles.exoplayer)
-
-    // DocumentFile
-    implementation(libs.androidx.documentfile)
+    // Coil (Image loading library)
+    implementation(libs.coil.kt.compose)
 
     //Serialization
     implementation(libs.kotlinx.serialization.json)
@@ -116,11 +111,15 @@ dependencies {
     //MMKV (Ultrafast Key-Value storage)
     implementation(libs.mmkv)
 
+    // ExoPlayer
+    implementation(libs.bundles.exoplayer)
+
+    // DocumentFile
+    implementation(libs.androidx.documentfile)
+
     //Unit testing libraries
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.androidx.test.espresso.core)
-
-    //UI debugging library for Jetpack Compose
     implementation(libs.androidx.compose.ui.tooling)
 }

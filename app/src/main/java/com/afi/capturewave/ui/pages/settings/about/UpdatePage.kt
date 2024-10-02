@@ -17,7 +17,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -36,13 +35,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.afi.capturewave.R
-import com.afi.capturewave.ui.UpdateDialog
 import com.afi.capturewave.ui.common.intState
 import com.afi.capturewave.ui.component.BackButton
+import androidx.compose.material3.LargeTopAppBar
 import com.afi.capturewave.ui.component.PreferenceInfo
 import com.afi.capturewave.ui.component.PreferenceSingleChoiceItem
 import com.afi.capturewave.ui.component.PreferenceSubtitle
 import com.afi.capturewave.ui.component.PreferenceSwitchWithContainer
+import com.afi.capturewave.ui.pages.UpdateDialog
 import com.afi.capturewave.util.AUTO_UPDATE
 import com.afi.capturewave.util.PRE_RELEASE
 import com.afi.capturewave.util.PreferenceUtil

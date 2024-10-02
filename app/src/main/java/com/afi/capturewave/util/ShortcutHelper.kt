@@ -17,8 +17,8 @@ object ShortcutHelper {
         @DrawableRes val iconRes: Int,
         @StringRes val label: Int
     ) {
-        object RecordAudio : AppShortcut(RecorderType.AUDIO.name, R.drawable.ic_audio, R.string.record_sound)
-        object RecordScreen : AppShortcut(RecorderType.VIDEO.name, R.drawable.ic_screen, R.string.record_screen)
+        data object RecordAudio : AppShortcut(RecorderType.AUDIO.name, R.drawable.ic_audio, R.string.record_sound)
+        data object RecordScreen : AppShortcut(RecorderType.VIDEO.name, R.drawable.ic_screen, R.string.record_screen)
     }
     private val shortcuts = listOf(AppShortcut.RecordAudio, AppShortcut.RecordScreen)
 
@@ -32,8 +32,7 @@ object ShortcutHelper {
                     this.action = Intent.ACTION_VIEW
                     putExtra(MainActivity.EXTRA_ACTION_KEY, action)
                 }
-            )
-            .build()
+            ).build()
 
         ShortcutManagerCompat.pushDynamicShortcut(context, shortcut)
     }

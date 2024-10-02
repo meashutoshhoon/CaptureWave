@@ -27,19 +27,11 @@ import java.io.File
 import java.util.regex.Pattern
 
 object UpdateUtil {
-
     private const val OWNER = "meashutoshhoon"
     private const val REPO = "CaptureWave"
-    private const val ARM64 = "arm64-v8a"
-    private const val ARM32 = "armeabi-v7a"
-    private const val X86 = "x86"
-    private const val X64 = "x86_64"
     private const val TAG = "UpdateUtil"
 
     private val client = OkHttpClient()
-    private val requestForLatestRelease =
-        Request.Builder().url("https://api.github.com/repos/${OWNER}/${REPO}/releases/latest")
-            .build()
 
     private val requestForReleases =
         Request.Builder().url("https://api.github.com/repos/${OWNER}/${REPO}/releases")
@@ -295,8 +287,6 @@ object UpdateUtil {
                 major * MAJOR + minor * MINOR + patch * PATCH + build * BUILD + 50
 
         }
-
-
 
         class Stable(versionMajor: Int = 0, versionMinor: Int = 0, versionPatch: Int = 0) :
             Version(versionMajor, versionMinor, versionPatch) {

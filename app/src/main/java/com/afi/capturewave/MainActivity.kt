@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,61 +12,57 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.afi.capturewave.App.Companion.context
 import com.afi.capturewave.enums.RecorderType
-import com.afi.capturewave.enums.ThemeMode
-import com.afi.capturewave.ui.AppNavHost
+import com.afi.capturewave.ui.common.LocalDarkTheme
+import com.afi.capturewave.ui.common.SettingsProvider
 import com.afi.capturewave.ui.models.RecorderModel
-import com.afi.capturewave.ui.models.ThemeModel
+import com.afi.capturewave.ui.pages.AppEntry
 import com.afi.capturewave.ui.theme.CaptureWaveTheme
+import com.afi.capturewave.util.PreferenceUtil
+import com.afi.capturewave.util.setLanguage
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
     private var initialRecorder = RecorderType.NONE
     private var exitAfterRecordingStart = false
-    private lateinit var mProjectionManager: MediaProjectionManager
     private val recorderModel: RecorderModel by viewModels()
+    private lateinit var mProjectionManager: MediaProjectionManager
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT < 33) {
+            runBlocking { setLanguage(PreferenceUtil.getLocaleFromPreference()) }
+        }
         enableEdgeToEdge()
 
-        val themeModel: ThemeModel by viewModels()
+        context = this.baseContext
+
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     recorderModel.startVideoRecorder(this, result)
                 }
             }
-        mProjectionManager =
-            getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
+        mProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
         processIntent(intent)
 
-        context = this.baseContext
         setContent {
-            CaptureWaveTheme(
-                when (themeModel.themeMode) {
-                    ThemeMode.SYSTEM -> isSystemInDarkTheme()
-                    ThemeMode.DARK, ThemeMode.AMOLED -> true
-                    else -> false
-                }, amoledDark = themeModel.themeMode == ThemeMode.AMOLED
-            ) {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+            val windowSizeClass = calculateWindowSizeClass(this)
+            SettingsProvider(windowWidthSizeClass = windowSizeClass.widthSizeClass) {
+                CaptureWaveTheme(
+                    darkTheme = LocalDarkTheme.current.isDarkTheme(),
+                    isHighContrastModeEnabled = LocalDarkTheme.current.isHighContrastModeEnabled,
                 ) {
-                    AppNavHost(
-                        initialRecorder = initialRecorder
-                    )
+                    AppEntry(initialRecorder = initialRecorder)
                 }
             }
         }

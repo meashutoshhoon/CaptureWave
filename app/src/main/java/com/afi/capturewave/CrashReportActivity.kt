@@ -16,15 +16,18 @@ import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.afi.capturewave.ui.common.LocalDarkTheme
+import com.afi.capturewave.ui.common.SettingsProvider
 import com.afi.capturewave.ui.component.FilledButtonWithIcon
-import com.afi.capturewave.ui.component.HorizontalDivider
 import com.afi.capturewave.ui.theme.CaptureWaveTheme
 
 class CrashReportActivity : ComponentActivity() {
@@ -34,11 +37,16 @@ class CrashReportActivity : ComponentActivity() {
         val errorMessage: String = intent.getStringExtra("error_report").toString()
 
         setContent {
-            CaptureWaveTheme {
-                val clipboardManager = LocalClipboardManager.current
-                CrashReportPage(errorMessage = errorMessage) {
-                    clipboardManager.setText(AnnotatedString(errorMessage))
-                    this.finishAffinity()
+            SettingsProvider(WindowWidthSizeClass.Compact) {
+                CaptureWaveTheme(
+                    darkTheme = LocalDarkTheme.current.isDarkTheme(),
+                    isHighContrastModeEnabled = LocalDarkTheme.current.isHighContrastModeEnabled,
+                ) {
+                    val clipboardManager = LocalClipboardManager.current
+                    CrashReportPage(errorMessage = errorMessage) {
+                        clipboardManager.setText(AnnotatedString(errorMessage))
+                        this.finishAffinity()
+                    }
                 }
             }
         }
@@ -52,9 +60,10 @@ class CrashReportActivity : ComponentActivity() {
 
 
 @Composable
+@Preview
 fun CrashReportPage(errorMessage: String = "ERROR_EXAMPLE", onClick: () -> Unit = {}) {
     Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
-        HorizontalDivider()
+        androidx.compose.material3.HorizontalDivider()
 
         FilledButtonWithIcon(
             modifier = Modifier

@@ -46,9 +46,9 @@ import com.afi.capturewave.enums.VideoFormat
 import com.afi.capturewave.ui.component.BackButton
 import com.afi.capturewave.ui.component.CWDialog
 import com.afi.capturewave.ui.component.ConfirmButton
+import com.afi.capturewave.ui.component.DialogSingleChoiceItem
 import com.afi.capturewave.ui.component.DismissButton
 import com.afi.capturewave.ui.component.PreferenceItem
-import com.afi.capturewave.ui.component.SingleChoiceItem
 import com.afi.capturewave.util.Preferences
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -141,12 +141,13 @@ fun ScreenRecorderPage(onNavigateBack: () -> Unit) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 entries.forEachIndexed { index, entry ->
-                    SingleChoiceItem(
+                    DialogSingleChoiceItem(
                         text = entry,
                         selected = audioValues[index] == selectedOption,
                         onClick = {
                             selectedOption = audioValues[index]
-                        })
+                        },
+                    )
                 }
             }
         })
@@ -181,12 +182,13 @@ fun ScreenRecorderPage(onNavigateBack: () -> Unit) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 entries.forEachIndexed { index, entry ->
-                    SingleChoiceItem(
+                    DialogSingleChoiceItem(
                         text = entry,
                         selected = values[index] == selectedOption,
                         onClick = {
                             selectedOption = values[index]
-                        })
+                        },
+                    )
                 }
             }
         })

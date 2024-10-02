@@ -30,10 +30,7 @@ const val TENCENT = "Tencent Wechat, Inc."
 const val SQUARE = "Square, Inc."
 const val YOU_APPS = "You Apps"
 
-
 const val recordYou = "https://github.com/you-apps/RecordYou"
-
-
 const val navigation = "https://developer.android.com/develop/ui/compose/navigation"
 const val bom = "https://github.com/chrisbanes/compose-bom"
 const val splash = "https://developer.android.com/develop/ui/views/launch/splash-screen"
@@ -54,11 +51,11 @@ fun CreditsPage(onNavigateBack: () -> Unit) {
 
     val creditsList = listOf(
         Credit("Android Jetpack", AOSP, APACHE_V2, "", jetpack),
-        Credit("Compose Navigation", AOSP, APACHE_V2, "2.8.0", navigation),
-        Credit("Kotlin", JETBRAINS, APACHE_V2, "2.0.0", kotlin),
-        Credit("MMKV", TENCENT, BSD, "1.3.2", mmkv),
+        Credit("Compose Navigation", AOSP, APACHE_V2, "2.8.1", navigation),
+        Credit("Kotlin", JETBRAINS, APACHE_V2, "2.0.20", kotlin),
+        Credit("MMKV", TENCENT, BSD, "1.3.9", mmkv),
         Credit("okhttp", SQUARE, APACHE_V2, "5.0.0-alpha.10", okhttp),
-        Credit("Snapper for Jetpack Compose", "Chris Banes", APACHE_V2, "2024.08.00-alpha01", bom),
+        Credit("Snapper for Jetpack Compose", "Chris Banes", APACHE_V2, "2024.09.00-alpha01", bom),
         Credit("SplashScreen", AOSP, APACHE_V2, "1.0.1", splash),
         Credit("Material Design 3", AOSP, APACHE_V2, "1.12.0", material3),
         Credit("Material Icons", AOSP, APACHE_V2, "", materialIcon),

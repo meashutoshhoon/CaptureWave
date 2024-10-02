@@ -50,7 +50,7 @@ import com.afi.capturewave.ui.component.CWDialog
 import com.afi.capturewave.ui.component.ConfirmButton
 import com.afi.capturewave.ui.component.DismissButton
 import com.afi.capturewave.ui.component.PreferenceItem
-import com.afi.capturewave.ui.component.SingleChoiceItem
+import com.afi.capturewave.ui.component.DialogSingleChoiceItem
 import com.afi.capturewave.util.Preferences
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -162,11 +162,12 @@ fun AudioFormatPage(onNavigateBack: () -> Unit) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 entries.forEachIndexed { index, entry ->
-                    SingleChoiceItem(text = entry,
+                    DialogSingleChoiceItem(text = entry,
                         selected = values[index] == selectedOption,
                         onClick = {
                             selectedOption = values[index]
-                        })
+                        },
+                    )
                 }
             }
         })
@@ -304,12 +305,13 @@ fun AudioFormatPage(onNavigateBack: () -> Unit) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 entries.forEachIndexed { index, entry ->
-                    SingleChoiceItem(
+                    DialogSingleChoiceItem(
                         text = entry,
                         selected = values[index] == selectedOption,
                         onClick = {
                             selectedOption = values[index]
-                        })
+                        },
+                    )
                 }
             }
         })
@@ -351,12 +353,13 @@ fun AudioFormatPage(onNavigateBack: () -> Unit) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 entries.forEachIndexed { index, entry ->
-                    SingleChoiceItem(
+                    DialogSingleChoiceItem(
                         text = entry,
                         selected = values[index] == selectedOption,
                         onClick = {
                             selectedOption = values[index]
-                        })
+                        },
+                    )
                 }
             }
         })

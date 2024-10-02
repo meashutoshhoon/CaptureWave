@@ -1,4 +1,4 @@
-package com.afi.capturewave.ui
+package com.afi.capturewave.ui.pages
 
 import android.os.Build
 import androidx.compose.animation.animateContentSize
@@ -26,6 +26,7 @@ import com.afi.capturewave.util.ToastUtil
 import com.afi.capturewave.util.UpdateUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun UpdateDialog(
@@ -93,5 +94,6 @@ fun UpdateDialogImpl(
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 Text(releaseNote)
             }
-        })
+        },
+    )
 }
