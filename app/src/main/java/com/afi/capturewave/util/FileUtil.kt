@@ -15,6 +15,7 @@ import androidx.documentfile.provider.DocumentFile
 import com.afi.capturewave.App.Companion.context
 import okhttp3.internal.closeQuietly
 import java.io.File
+import androidx.core.net.toUri
 
 const val AUDIO_REGEX = "(mp3|aac|opus|m4a)$"
 const val THUMBNAIL_REGEX = "\\.(jpg|png)$"
@@ -25,17 +26,20 @@ object FileUtil {
     private fun createIntentForFile(path: String?): Intent? {
         if (path == null) return null
 
-        val uri = path.runCatching {
-            DocumentFile.fromSingleUri(context, Uri.parse(path)).run {
-                if (this?.exists() == true) {
-                    this.uri
-                } else if (File(this@runCatching).exists()) {
-                    FileProvider.getUriForFile(
-                        context, context.getFileProvider(), File(this@runCatching)
-                    )
-                } else null
-            }
-        }.getOrNull() ?: return null
+        val uri =
+            path.runCatching {
+                    DocumentFile.fromSingleUri(context, path.toUri()).run {
+                        if (this?.exists() == true) {
+                            this.uri
+                        } else if (File(this@runCatching).exists()) {
+                            FileProvider.getUriForFile(
+                                context,
+                                context.getFileProvider(),
+                                File(this@runCatching),
+                            )
+                        } else null
+                    }
+                }.getOrNull() ?: return null
 
         return Intent().apply {
             flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -43,41 +47,41 @@ object FileUtil {
         }
     }
 
-    fun createIntentForOpeningFile(path: String?): Intent? = createIntentForFile(path)?.let {
-        it.apply {
-            action = (Intent.ACTION_VIEW)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    fun createIntentForOpeningFile(path: String?): Intent? =
+        createIntentForFile(path)?.let {
+            it.apply {
+                action = (Intent.ACTION_VIEW)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
         }
-    }
 
-    fun createIntentForSharingFile(path: String?): Intent? = createIntentForFile(path)?.apply {
-        action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_STREAM, data)
-        val mimeType = data?.let { context.contentResolver.getType(it) } ?: "media/*"
-        setDataAndType(this.data, mimeType)
-        clipData = ClipData(
-            null, arrayOf(mimeType), ClipData.Item(data)
-        )
-    }
+    fun createIntentForSharingFile(path: String?): Intent? =
+        createIntentForFile(path)?.apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, data)
+            val mimeType = data?.let { context.contentResolver.getType(it) } ?: "media/*"
+            setDataAndType(this.data, mimeType)
+            clipData = ClipData(null, arrayOf(mimeType), ClipData.Item(data))
+        }
 
     fun Context.getFileProvider() = "$packageName.provider"
 
     fun String.getFileSize(): Long = this.run {
         val length = File(this).length()
-        if (length == 0L) DocumentFile.fromSingleUri(context, Uri.parse(this))?.length() ?: 0L
+        if (length == 0L) DocumentFile.fromSingleUri(context, this.toUri())?.length() ?: 0L
         else length
     }
 
     fun String.getFileName(): String = this.run {
         File(this).nameWithoutExtension.ifEmpty {
             DocumentFile.fromSingleUri(
-                context, Uri.parse(this)
+                context, this.toUri()
             )?.name ?: "video"
         }
     }
 
     fun deleteFile(path: String) = path.runCatching {
-        if (!File(path).delete()) DocumentFile.fromSingleUri(context, Uri.parse(this))?.delete()
+        if (!File(path).delete()) DocumentFile.fromSingleUri(context, this.toUri())?.delete()
     }
 
     @CheckResult
@@ -104,7 +108,7 @@ object FileUtil {
         tempPath: File, sdcardUri: String
     ): Result<List<String>> {
         val uriList = mutableListOf<String>()
-        val destDir = Uri.parse(sdcardUri).run {
+        val destDir = sdcardUri.toUri().run {
             DocumentsContract.buildDocumentUriUsingTree(
                 this, DocumentsContract.getTreeDocumentId(this)
             )

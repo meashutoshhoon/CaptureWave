@@ -1,6 +1,7 @@
 package com.afi.capturewave.ui.pages.home
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +14,10 @@ import androidx.compose.material.icons.outlined.Subscriptions
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.Videocam
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.PlainTooltip
@@ -27,7 +30,6 @@ import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,12 +42,12 @@ import com.afi.capturewave.ui.common.Route
 import com.afi.capturewave.ui.models.RecorderModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HomeScreen(
     initialRecorder: RecorderType,
     navController: NavController,
-    recorderModel: RecorderModel = viewModel(LocalContext.current as ComponentActivity)
+    recorderModel: RecorderModel = viewModel(LocalActivity.current as ComponentActivity)
 ) {
     val pagerState = rememberPagerState { 2 }
     val scope = rememberCoroutineScope()
@@ -54,7 +56,7 @@ fun HomeScreen(
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = {}, actions = {
             TooltipBox(state = rememberTooltipState(),
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
                 tooltip = {
                     PlainTooltip {
                         Text(text = stringResource(id = R.string.recordings))
@@ -67,7 +69,9 @@ fun HomeScreen(
                             launchSingleTop = true
                             restoreState = true
                         }
-                    }, modifier = Modifier
+                    },
+                    modifier = Modifier,
+                    shapes = IconButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Subscriptions,
@@ -77,7 +81,7 @@ fun HomeScreen(
             }
         }, navigationIcon = {
             TooltipBox(state = rememberTooltipState(),
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
                 tooltip = {
                     PlainTooltip {
                         Text(text = stringResource(id = R.string.settings))
@@ -90,7 +94,9 @@ fun HomeScreen(
                             launchSingleTop = true
                             restoreState = true
                         }
-                    }, modifier = Modifier
+                    },
+                    modifier = Modifier,
+                    shapes = IconButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Settings,

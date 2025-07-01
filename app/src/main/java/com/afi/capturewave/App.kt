@@ -33,7 +33,6 @@ class App : Application() {
         super.onCreate()
         MMKV.initialize(this)
 
-
         context = applicationContext
         packageInfo =
             packageManager.run {

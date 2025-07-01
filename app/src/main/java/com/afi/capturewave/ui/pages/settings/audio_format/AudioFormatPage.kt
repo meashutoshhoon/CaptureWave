@@ -216,7 +216,8 @@ fun AudioFormatPage(onNavigateBack: () -> Unit) {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         label = { Text(stringResource(R.string.bitrate)) })
                 }
-            })
+            }
+        )
     }
 
     if (sampleRateDialog) {
@@ -262,7 +263,8 @@ fun AudioFormatPage(onNavigateBack: () -> Unit) {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         label = { Text(stringResource(R.string.sample_rate)) })
                 }
-            })
+            }
+        )
     }
 
     if (audioSourceDialog) {

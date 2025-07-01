@@ -1,7 +1,5 @@
 package com.afi.capturewave.ui.component
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Translate
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -45,12 +42,10 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.afi.capturewave.R
 import com.afi.capturewave.ui.common.LocalFixedColorRoles
-import com.afi.capturewave.ui.theme.FixedAccentColors
 import com.afi.capturewave.ui.theme.applyOpacity
 import com.afi.capturewave.ui.theme.harmonizeWithPrimary
 import com.afi.capturewave.ui.theme.preferenceTitle
@@ -655,97 +650,6 @@ fun PreferenceSwitchWithContainer(
             thumbContent = thumbContent,
         )
     }
-}
-
-@Composable
-fun TemplateItem(
-    label: String = "",
-    template: String? = null,
-    selected: Boolean = false,
-    isMultiSelectEnabled: Boolean = false,
-    checked: Boolean = false,
-    onClick: () -> Unit = {},
-    onSelect: () -> Unit = {},
-    onCheckedChange: (Boolean) -> Unit = {},
-    onLongClick: () -> Unit = {}
-) {
-    Surface(
-        modifier = Modifier.run {
-            if (!isMultiSelectEnabled) then(
-                this.combinedClickable(
-                    onClick = onClick,
-                    onClickLabel = stringResource(R.string.edit),
-                    onLongClick = onLongClick,
-                    onLongClickLabel = stringResource(R.string.multiselect_mode)
-                )
-            ) else {
-                then(this.toggleable(value = checked, onValueChange = onCheckedChange))
-            }
-        }
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp, 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            AnimatedVisibility(visible = isMultiSelectEnabled) {
-                Checkbox(
-                    modifier = Modifier.clearAndSetSemantics { },
-                    checked = checked,
-                    onCheckedChange = onCheckedChange
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 10.dp)
-            ) {
-                with(MaterialTheme) {
-                    Text(
-                        text = label,
-                        maxLines = 1,
-                        style = typography.titleMedium,
-                        color = colorScheme.onSurface
-                    )
-                    template?.let {
-                        Text(
-                            text = it,
-                            color = colorScheme.onSurfaceVariant,
-                            maxLines = 2, overflow = TextOverflow.Ellipsis,
-                            style = typography.bodyMedium,
-                        )
-                    }
-                }
-            }
-
-
-            AnimatedVisibility(!isMultiSelectEnabled) {
-                Row {
-                    VerticalDivider(
-                        modifier = Modifier
-                            .height(32.dp)
-                            .padding(horizontal = 12.dp)
-                            .align(Alignment.CenterVertically),
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                        thickness = 1.dp
-                    )
-                    RadioButton(
-                        modifier = Modifier.semantics { contentDescription = label },
-                        selected = selected,
-                        onClick = onSelect
-                    )
-                }
-
-            }
-
-
-        }
-
-
-    }
-
 }
 
 @Composable

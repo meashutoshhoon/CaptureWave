@@ -138,7 +138,7 @@ object PreferenceUtil {
         val darkTheme: DarkThemePreference = DarkThemePreference(),
         val isDynamicColorEnabled: Boolean = false,
         val seedColor: Int = DEFAULT_SEED_COLOR,
-        val paletteStyleIndex: Int = 0
+        val paletteStyleIndex: Int = 0,
     )
 
     private val mutableAppSettingsStateFlow =
@@ -147,17 +147,20 @@ object PreferenceUtil {
                 DarkThemePreference(
                     darkThemeValue =
                     kv.decodeInt(DARK_THEME_VALUE, DarkThemePreference.FOLLOW_SYSTEM),
-                    isHighContrastModeEnabled = kv.decodeBool(HIGH_CONTRAST, false)),
+                    isHighContrastModeEnabled = kv.decodeBool(HIGH_CONTRAST, false),
+                ),
                 isDynamicColorEnabled =
                 kv.decodeBool(DYNAMIC_COLOR, DynamicColors.isDynamicColorAvailable()),
                 seedColor = kv.decodeInt(THEME_COLOR, DEFAULT_SEED_COLOR),
-                paletteStyleIndex = kv.decodeInt(PALETTE_STYLE, 0)))
+                paletteStyleIndex = kv.decodeInt(PALETTE_STYLE, 0),
+            )
+        )
     val AppSettingsStateFlow = mutableAppSettingsStateFlow.asStateFlow()
 
     fun modifyDarkThemePreference(
         darkThemeValue: Int = AppSettingsStateFlow.value.darkTheme.darkThemeValue,
         isHighContrastModeEnabled: Boolean =
-            AppSettingsStateFlow.value.darkTheme.isHighContrastModeEnabled
+            AppSettingsStateFlow.value.darkTheme.isHighContrastModeEnabled,
     ) {
         applicationScope.launch(Dispatchers.IO) {
             mutableAppSettingsStateFlow.update {
@@ -165,7 +168,9 @@ object PreferenceUtil {
                     darkTheme =
                     AppSettingsStateFlow.value.darkTheme.copy(
                         darkThemeValue = darkThemeValue,
-                        isHighContrastModeEnabled = isHighContrastModeEnabled))
+                        isHighContrastModeEnabled = isHighContrastModeEnabled,
+                    )
+                )
             }
             kv.encode(DARK_THEME_VALUE, darkThemeValue)
             kv.encode(HIGH_CONTRAST, isHighContrastModeEnabled)
@@ -196,7 +201,7 @@ object PreferenceUtil {
 
 data class DarkThemePreference(
     val darkThemeValue: Int = FOLLOW_SYSTEM,
-    val isHighContrastModeEnabled: Boolean = false
+    val isHighContrastModeEnabled: Boolean = false,
 ) {
     companion object {
         const val FOLLOW_SYSTEM = 1

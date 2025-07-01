@@ -237,6 +237,7 @@ fun ScreenRecorderPage(onNavigateBack: () -> Unit) {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         label = { Text(stringResource(R.string.bitrate)) })
                 }
-            })
+            }
+        )
     }
 }

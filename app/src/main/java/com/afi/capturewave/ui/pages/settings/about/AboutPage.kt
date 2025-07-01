@@ -82,11 +82,7 @@ fun AboutPage(
     Scaffold(modifier = Modifier, topBar = {
         TopAppBar(
             title = {},
-            navigationIcon = {
-                BackButton {
-                    onNavigateBack()
-                }
-            },
+            navigationIcon = { BackButton { onNavigateBack() } },
         )
     }, content = {
         Column {
@@ -145,7 +141,7 @@ fun AboutPage(
                                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                                 contentColor = MaterialTheme.colorScheme.tertiary,
                             ) {
-                                Text("v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
+                                Text("v${BuildConfig.VERSION_NAME}")
                             }
                         }) {
                             Text(

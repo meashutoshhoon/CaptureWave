@@ -12,8 +12,11 @@ plugins {
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
 
+val baseVersionName = currentVersion.name
+val currentVersionCode = currentVersion.code.toInt()
+
 android {
-    compileSdk = 35
+    compileSdk = 36
 
     if (keystorePropertiesFile.exists()) {
         val keystoreProperties = Properties()
@@ -32,11 +35,12 @@ android {
 
     defaultConfig {
         applicationId = "com.afi.capturewave"
-        minSdk = 21
-        targetSdk = 35
-        versionCode = 6
+        minSdk = 23
+        targetSdk = 36
+        versionCode = 104_020_400
+        check(versionCode == currentVersionCode)
 
-        versionName = rootProject.extra["versionName"] as String
+        versionName = baseVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
     }
@@ -72,7 +76,11 @@ android {
         }
     }
 
-    kotlinOptions { freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn" }
+    kotlin {
+        compilerOptions {
+            optIn.add("kotlin.RequiresOptIn")
+        }
+    }
 
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
     androidResources { generateLocaleConfig = true }
@@ -91,7 +99,6 @@ dependencies {
 
     //Lifecycle support for Jetpack Compose
     implementation(libs.androidx.lifecycle.runtimeCompose)
-    implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.service)
 
     //Material UI

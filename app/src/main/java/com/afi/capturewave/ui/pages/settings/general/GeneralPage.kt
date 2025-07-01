@@ -48,6 +48,7 @@ import com.afi.capturewave.util.Preferences
 import com.afi.capturewave.util.TARGET_FOLDER_KEY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 
 @OptIn(
     ExperimentalMaterial3Api::class
@@ -72,7 +73,7 @@ fun GeneralPage(
     val directoryPickerFunction = {
         val lastDir = Preferences.prefs.getString(Preferences.targetFolderKey, "")
             .takeIf { !it.isNullOrBlank() }
-        directoryPicker.launch(lastDir?.let { Uri.parse(it) })
+        directoryPicker.launch(lastDir?.toUri())
     }
 
     Scaffold(modifier = Modifier
@@ -92,28 +93,26 @@ fun GeneralPage(
             LazyColumn(
                 modifier = Modifier.padding(it)
             ) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    item {
-                        var checked by remember {
-                            mutableStateOf(
-                                Preferences.prefs.getBoolean(Preferences.losslessRecorderKey, false)
-                            )
-                        }
-                        PreferenceSwitch(
-                            title = stringResource(R.string.lossless_audio),
-                            description = stringResource(R.string.lossless_audio_desc),
-                            icon = Icons.Rounded.Audiotrack,
-                            onClick = {
-                                checked = !checked
-                                Preferences.edit {
-                                    putBoolean(
-                                        Preferences.losslessRecorderKey, checked
-                                    )
-                                }
-                            },
-                            isChecked = checked
+                item {
+                    var checked by remember {
+                        mutableStateOf(
+                            Preferences.prefs.getBoolean(Preferences.losslessRecorderKey, false)
                         )
                     }
+                    PreferenceSwitch(
+                        title = stringResource(R.string.lossless_audio),
+                        description = stringResource(R.string.lossless_audio_desc),
+                        icon = Icons.Rounded.Audiotrack,
+                        onClick = {
+                            checked = !checked
+                            Preferences.edit {
+                                putBoolean(
+                                    Preferences.losslessRecorderKey, checked
+                                )
+                            }
+                        },
+                        isChecked = checked
+                    )
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     item {
@@ -208,7 +207,8 @@ fun GeneralPage(
                     OutlinedTextField(value = value,
                         onValueChange = { value = it },
                         shape = RoundedCornerShape(13.dp),
-                        label = { Text(stringResource(R.string.naming_pattern)) })
+                        label = { Text(stringResource(R.string.naming_pattern)) }
+                    )
                 }
 
             },

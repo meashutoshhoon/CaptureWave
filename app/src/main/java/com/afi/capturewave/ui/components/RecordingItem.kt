@@ -93,6 +93,7 @@ fun RecordingItem(
                         onClick.invoke(true)
                     }
                 ),
+            shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = cardColor,
                 contentColor = contentColorFor(cardColor)
@@ -220,6 +221,7 @@ fun RecordingItem(
                         onValueChange = {
                             fileName = it
                         },
+                        shape = RoundedCornerShape(12.dp),
                         label = {
                             Text(stringResource(R.string.file_name))
                         }

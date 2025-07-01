@@ -6,6 +6,7 @@ import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.text.format.DateUtils
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -26,8 +27,10 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,11 +49,12 @@ import com.afi.capturewave.enums.RecorderState
 import com.afi.capturewave.ui.component.ClickableIcon
 import com.afi.capturewave.ui.models.RecorderModel
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun RecorderController(
     recordScreenMode: Boolean
 ) {
-    val recorderModel: RecorderModel = viewModel(LocalContext.current as ComponentActivity)
+    val recorderModel: RecorderModel = viewModel(LocalActivity.current as ComponentActivity)
     val context = LocalContext.current
     val mProjectionManager =
         context.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
@@ -113,7 +117,8 @@ fun RecorderController(
                     },
                     modifier = Modifier
                         .padding(16.dp)
-                        .semantics { contentDescription = buttonDescription }
+                        .semantics { contentDescription = buttonDescription },
+                    shapes = IconButtonDefaults.shapes()
                 ) {
                     when {
                         recorderModel.recorderState != RecorderState.IDLE -> {

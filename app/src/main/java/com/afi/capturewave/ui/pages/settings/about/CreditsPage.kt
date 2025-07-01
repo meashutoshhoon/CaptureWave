@@ -50,14 +50,13 @@ fun CreditsPage(onNavigateBack: () -> Unit) {
     )
 
     val creditsList = listOf(
-        Credit("Android Jetpack", AOSP, APACHE_V2, "", jetpack),
-        Credit("Compose Navigation", AOSP, APACHE_V2, "2.8.1", navigation),
-        Credit("Kotlin", JETBRAINS, APACHE_V2, "2.0.20", kotlin),
-        Credit("MMKV", TENCENT, BSD, "1.3.9", mmkv),
-        Credit("okhttp", SQUARE, APACHE_V2, "5.0.0-alpha.10", okhttp),
-        Credit("Snapper for Jetpack Compose", "Chris Banes", APACHE_V2, "2024.09.00-alpha01", bom),
+        Credit("Android Jetpack", AOSP, APACHE_V2, "2025.06.01", jetpack),
+        Credit("Compose Navigation", AOSP, APACHE_V2, "2.9.0", navigation),
+        Credit("Kotlin", JETBRAINS, APACHE_V2, "2.2.0", kotlin),
+        Credit("MMKV", TENCENT, BSD, "2.2.2", mmkv),
+        Credit("okhttp", SQUARE, APACHE_V2, "5.0.0-alpha.16", okhttp),
         Credit("SplashScreen", AOSP, APACHE_V2, "1.0.1", splash),
-        Credit("Material Design 3", AOSP, APACHE_V2, "1.12.0", material3),
+        Credit("Material Expressive", AOSP, APACHE_V2, "1.4.0-alpha16", material3),
         Credit("Material Icons", AOSP, APACHE_V2, "", materialIcon),
         Credit("RecordYou", YOU_APPS, GPL_V3, "", recordYou)
     )
@@ -68,30 +67,19 @@ fun CreditsPage(onNavigateBack: () -> Unit) {
     }
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LargeTopAppBar(
                 title = {
-                    Text(
-                        modifier = Modifier,
-                        text = stringResource(id = R.string.credits),
-                    )
-                }, navigationIcon = {
-                    BackButton {
-                        onNavigateBack()
-                    }
-                }, scrollBehavior = scrollBehavior
+                    Text(modifier = Modifier, text = stringResource(id = R.string.credits))
+                },
+                navigationIcon = { BackButton { onNavigateBack() } },
+                scrollBehavior = scrollBehavior,
             )
         }, content = {
             LazyColumn(modifier = Modifier.padding(it)) {
                 items(creditsList) { item ->
-                    CreditItem(
-                        credit = item,
-                    ) {
-                        openUrl(item.url)
-                    }
+                    CreditItem(credit = item) { openUrl(item.url) }
                 }
             }
         }

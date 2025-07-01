@@ -7,7 +7,6 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 import com.afi.capturewave.ui.common.LocalDarkTheme
-import com.afi.capturewave.ui.common.LocalFixedColorRoles
 import com.kyant.monet.TonalPalettes
 import com.kyant.monet.TonalPalettes.Companion.toTonalPalettes
 import io.material.hct.Hct
@@ -34,52 +33,6 @@ fun Number.autoDark(isDarkTheme: Boolean = LocalDarkTheme.current.isDarkTheme())
             100.0 -> 20.0
             else -> this.toDouble()
         }
-
-@Deprecated(
-    message = "Deprecated",
-    replaceWith =
-    ReplaceWith(
-        "LocalFixedColorRoles.current",
-        imports = arrayOf("com.afi.capturewave.ui.common.LocalFixedColorRoles"),
-    ),
-)
-object FixedAccentColors {
-    val primaryFixed: Color
-        @Composable get() = LocalFixedColorRoles.current.primaryFixed
-
-    val primaryFixedDim: Color
-        @Composable get() = LocalFixedColorRoles.current.primaryFixedDim
-
-    val onPrimaryFixed: Color
-        @Composable get() = LocalFixedColorRoles.current.onPrimaryFixed
-
-    val onPrimaryFixedVariant: Color
-        @Composable get() = LocalFixedColorRoles.current.onPrimaryFixedVariant
-
-    val secondaryFixed: Color
-        @Composable get() = LocalFixedColorRoles.current.secondaryFixed
-
-    val secondaryFixedDim: Color
-        @Composable get() = LocalFixedColorRoles.current.secondaryFixedDim
-
-    val onSecondaryFixed: Color
-        @Composable get() = LocalFixedColorRoles.current.onSecondaryFixed
-
-    val onSecondaryFixedVariant: Color
-        @Composable get() = LocalFixedColorRoles.current.onSecondaryFixedVariant
-
-    val tertiaryFixed: Color
-        @Composable get() = LocalFixedColorRoles.current.tertiaryFixed
-
-    val tertiaryFixedDim: Color
-        @Composable get() = LocalFixedColorRoles.current.tertiaryFixedDim
-
-    val onTertiaryFixed: Color
-        @Composable get() = LocalFixedColorRoles.current.onTertiaryFixed
-
-    val onTertiaryFixedVariant: Color
-        @Composable get() = LocalFixedColorRoles.current.onTertiaryFixedVariant
-}
 
 @Immutable
 data class FixedColorRoles(

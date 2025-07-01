@@ -45,12 +45,11 @@ class MainActivity : AppCompatActivity() {
 
         context = this.baseContext
 
-        launcher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    recorderModel.startVideoRecorder(this, result)
-                }
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                recorderModel.startVideoRecorder(this, result)
             }
+        }
 
         mProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
         processIntent(intent)

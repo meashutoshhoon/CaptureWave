@@ -1,6 +1,5 @@
 package com.afi.capturewave.ui.component
 
-import android.view.SoundEffectConstants
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +13,7 @@ import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -64,6 +64,7 @@ fun OutlinedButtonWithIcon(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun TextButtonWithIcon(
     modifier: Modifier = Modifier,
@@ -76,9 +77,9 @@ fun TextButtonWithIcon(
         modifier = modifier,
         onClick = onClick,
         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-        colors = ButtonDefaults.textButtonColors(contentColor = contentColor)
-    )
-    {
+        colors = ButtonDefaults.textButtonColors(contentColor = contentColor),
+        shapes = ButtonDefaults.shapes()
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 modifier = Modifier.size(18.dp),
@@ -121,6 +122,7 @@ fun FilledTonalButtonWithIcon(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FilledButtonWithIcon(
     modifier: Modifier = Modifier,
@@ -132,6 +134,7 @@ fun FilledButtonWithIcon(
     Button(
         modifier = modifier,
         onClick = onClick,
+        shapes = ButtonDefaults.shapes(),
         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
         enabled = enabled
     )
@@ -223,16 +226,20 @@ fun LongTapTextButton(
 
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DialogButton(
     text: String,
     onClick: () -> Unit
 ) {
     val view = LocalView.current
-    TextButton(onClick = {
-        view.slightHapticFeedback()
-        onClick.invoke()
-    }) {
+    TextButton(
+        onClick = {
+            view.slightHapticFeedback()
+            onClick.invoke()
+        },
+        shapes = ButtonDefaults.shapes()
+    ) {
         Text(text)
     }
 }

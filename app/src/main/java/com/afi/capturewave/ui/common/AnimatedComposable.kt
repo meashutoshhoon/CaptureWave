@@ -22,9 +22,9 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.afi.capturewave.ui.common.motion.EmphasizedDecelerate
 import com.afi.capturewave.ui.common.motion.EmphasizeEasing
 import com.afi.capturewave.ui.common.motion.EmphasizedAccelerate
+import com.afi.capturewave.ui.common.motion.EmphasizedDecelerate
 import com.afi.capturewave.ui.common.motion.materialSharedAxisXIn
 import com.afi.capturewave.ui.common.motion.materialSharedAxisXOut
 

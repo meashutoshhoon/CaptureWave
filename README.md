@@ -2,7 +2,7 @@
 <div align="center">
   <img width="200" height="200" src="fastlane/metadata/android/en-US/images/icon.png">
   <h1>CaptureWave</h1>
-<p>Privacy focused voice and screen recorder app built with Material You.</p>
+<p>Privacy focused voice and screen recorder app built with Material Expressive.</p>
 
 <!-- ---------- Badges ---------- -->
   <div align="center">
@@ -17,7 +17,7 @@
 
 ## Features
 
-- [x] Material Design 3 (You)
+- [x] Material Expressive
 - [x] Dark and light theme
 - [X] Support for audio and screen recording
 - [X] Different available formats and codecs

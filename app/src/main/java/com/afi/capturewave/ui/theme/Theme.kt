@@ -3,7 +3,9 @@ package com.afi.capturewave.ui.theme
 import android.os.Build
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -33,6 +35,7 @@ fun Color.harmonizeWith(other: Color) =
 fun Color.harmonizeWithPrimary(): Color =
     this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun CaptureWaveTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -84,7 +87,7 @@ fun CaptureWaveTheme(
         LocalFixedColorRoles provides FixedColorRoles.fromTonalPalettes(tonalPalettes),
         LocalTextStyle provides textStyle,
     ) {
-        MaterialTheme(
+        MaterialExpressiveTheme(
             colorScheme = colorScheme,
             typography = Typography,
             shapes = Shapes,
@@ -94,7 +97,7 @@ fun CaptureWaveTheme(
 }
 
 @Composable
-@Deprecated("Use SealTheme instead", replaceWith = ReplaceWith("SealTheme(content)"))
+@Deprecated("Use CaptureWaveTheme instead", replaceWith = ReplaceWith("CaptureWaveTheme(content)"))
 fun PreviewThemeLight(content: @Composable () -> Unit) {
     CaptureWaveTheme(darkTheme = false, content = content)
 }

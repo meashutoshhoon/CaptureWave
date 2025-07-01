@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
@@ -23,7 +22,9 @@ import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material.icons.rounded.SettingsApplications
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,93 +44,74 @@ import com.afi.capturewave.ui.common.Route
 import com.afi.capturewave.ui.component.BackButton
 import com.afi.capturewave.ui.component.PreferencesHintCard
 import com.afi.capturewave.ui.component.SettingItem
+import androidx.core.net.toUri
 
 @SuppressLint("BatteryLife")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun SettingsPage(
-    onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit
-) {
+fun SettingsPage(onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit) {
     val context = LocalContext.current
     val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
     var showBatteryHint by remember {
         mutableStateOf(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                !pm.isIgnoringBatteryOptimizations(context.packageName)
-            } else {
-                false
-            }
+            !pm.isIgnoringBatteryOptimizations(context.packageName)
         )
     }
-    val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    val intent =
         Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-            data = Uri.parse("package:${context.packageName}")
+            data = "package:${context.packageName}".toUri()
         }
-    } else {
-        Intent()
-    }
-    val isActivityAvailable: Boolean = if (Build.VERSION.SDK_INT < 23) false
-    else if (Build.VERSION.SDK_INT < 33) context.packageManager.queryIntentActivities(
-        intent,
-        PackageManager.MATCH_ALL
-    ).isNotEmpty()
-    else context.packageManager.queryIntentActivities(
-        intent,
-        PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_SYSTEM_ONLY.toLong())
-    ).isNotEmpty()
-
+    val isActivityAvailable: Boolean =
+        if (Build.VERSION.SDK_INT < 33)
+            context.packageManager
+                .queryIntentActivities(intent, PackageManager.MATCH_ALL)
+                .isNotEmpty()
+        else
+            context.packageManager
+                .queryIntentActivities(
+                    intent,
+                    PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_SYSTEM_ONLY.toLong()),
+                )
+                .isNotEmpty()
 
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                showBatteryHint = !pm.isIgnoringBatteryOptimizations(context.packageName)
-            }
+            showBatteryHint = !pm.isIgnoringBatteryOptimizations(context.packageName)
         }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     val typography = MaterialTheme.typography
 
-    Scaffold(modifier = Modifier
-        .fillMaxSize()
-        .nestedScroll(scrollBehavior.nestedScrollConnection),
+    Scaffold(
+        modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            val overrideTypography = remember(typography) {
-                typography.copy(headlineMedium = typography.displaySmall)
-            }
+            val overrideTypography =
+                remember(typography) { typography.copy(headlineMedium = typography.displaySmall) }
 
-            MaterialTheme(typography = overrideTypography) {
+            MaterialExpressiveTheme(typography = overrideTypography) {
                 LargeTopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(id = R.string.settings),
-                        )
-                    },
+                    title = { Text(text = stringResource(id = R.string.settings)) },
                     navigationIcon = { BackButton(onNavigateBack) },
                     scrollBehavior = scrollBehavior,
-                    expandedHeight = TopAppBarDefaults.LargeAppBarExpandedHeight + 24.dp
+                    expandedHeight = TopAppBarDefaults.LargeAppBarExpandedHeight + 24.dp,
                 )
             }
-        }
+        },
     ) {
-        LazyColumn(
-            modifier = Modifier, contentPadding = it
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-            ) {
-                item {
-                    AnimatedVisibility(
-                        visible = showBatteryHint && isActivityAvailable,
-                        exit = shrinkVertically() + fadeOut()
+        LazyColumn(modifier = Modifier, contentPadding = it) {
+            item {
+                AnimatedVisibility(
+                    visible = showBatteryHint && isActivityAvailable,
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    PreferencesHintCard(
+                        title = stringResource(R.string.battery_configuration),
+                        icon = Icons.Rounded.EnergySavingsLeaf,
+                        description = stringResource(R.string.battery_configuration_desc),
                     ) {
-                        PreferencesHintCard(
-                            title = stringResource(R.string.battery_configuration),
-                            icon = Icons.Rounded.EnergySavingsLeaf,
-                            description = stringResource(R.string.battery_configuration_desc),
-                        ) {
-                            launcher.launch(intent)
-                            showBatteryHint =
-                                !pm.isIgnoringBatteryOptimizations(context.packageName)
-                        }
+                        launcher.launch(intent)
+                        showBatteryHint =
+                            !pm.isIgnoringBatteryOptimizations(context.packageName)
                     }
                 }
             }

@@ -9,8 +9,10 @@ import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Stop
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +26,7 @@ import com.afi.capturewave.R
 import com.afi.capturewave.enums.RecorderState
 import com.afi.capturewave.ui.models.RecorderModel
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ToolbarView(
     modifier: Modifier = Modifier,
@@ -43,7 +46,8 @@ fun ToolbarView(
                         DrawMode.Eraser
                     }
                     canvasViewModel.currentPath.drawMode = currentDrawMode
-                }
+                },
+                shapes = IconButtonDefaults.shapes()
             ) {
                 if (currentDrawMode == DrawMode.Eraser) {
                     Icon(
@@ -57,20 +61,26 @@ fun ToolbarView(
                     )
                 }
             }
-            IconButton(onClick = {
-                hideCanvas(true)
-                canvasViewModel.paths.clear()
-            }) {
+            IconButton(
+                onClick = {
+                    hideCanvas(true)
+                    canvasViewModel.paths.clear()
+                },
+                shapes = IconButtonDefaults.shapes()
+            ) {
                 Icon(Icons.Rounded.Clear, "Show/Hide Canvas")
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                IconButton(onClick = {
-                    if (recorderModel.recorderState == RecorderState.PAUSED) {
-                        recorderModel.resumeRecording()
-                    } else {
-                        recorderModel.pauseRecording()
-                    }
-                }) {
+                IconButton(
+                    onClick = {
+                        if (recorderModel.recorderState == RecorderState.PAUSED) {
+                            recorderModel.resumeRecording()
+                        } else {
+                            recorderModel.pauseRecording()
+                        }
+                    },
+                    shapes = IconButtonDefaults.shapes()
+                ) {
                     if (recorderModel.recorderState == RecorderState.PAUSED) {
                         Icon(
                             Icons.Rounded.PlayArrow,
@@ -84,9 +94,12 @@ fun ToolbarView(
                     }
                 }
             }
-            IconButton(onClick = {
-                recorderModel.stopRecording()
-            }) {
+            IconButton(
+                onClick = {
+                    recorderModel.stopRecording()
+                },
+                shapes = IconButtonDefaults.shapes()
+            ) {
                 Icon(Icons.Rounded.Stop, stringResource(id = R.string.stop))
             }
         }

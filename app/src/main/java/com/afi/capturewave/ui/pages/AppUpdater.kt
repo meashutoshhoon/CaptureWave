@@ -2,7 +2,6 @@ package com.afi.capturewave.ui.pages
 
 import android.Manifest
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.core.net.toUri
 
 @Composable
 fun AppUpdater() {
@@ -36,7 +36,7 @@ fun AppUpdater() {
     }
     val scope = rememberCoroutineScope()
     var updateJob: Job? = null
-    var latestRelease by remember { mutableStateOf(UpdateUtil.LatestRelease()) }
+    var release by remember { mutableStateOf(UpdateUtil.Release()) }
     val settings =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             UpdateUtil.installLatestApk()
@@ -51,7 +51,7 @@ fun AppUpdater() {
                         settings.launch(
                             Intent(
                                 Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                                Uri.parse("package:${context.packageName}"),
+                                "package:${context.packageName}".toUri(),
                             )
                         )
                     else UpdateUtil.installLatestApk()
@@ -67,7 +67,7 @@ fun AppUpdater() {
         withContext(Dispatchers.IO) {
             runCatching {
                 UpdateUtil.checkForUpdate()?.let {
-                    latestRelease = it
+                    release = it
                     showUpdateDialog = true
                 }
             }
@@ -81,13 +81,13 @@ fun AppUpdater() {
                 showUpdateDialog = false
                 updateJob?.cancel()
             },
-            title = latestRelease.name.toString(),
+            title = release.name.toString(),
             onConfirmUpdate = {
                 updateJob =
                     scope.launch(Dispatchers.IO) {
                         runCatching {
-                            UpdateUtil.downloadApk(latestRelease = latestRelease).collect {
-                                    downloadStatus ->
+                            UpdateUtil.downloadApk(release = release).collect { downloadStatus
+                                ->
                                 currentDownloadStatus = downloadStatus
                                 if (downloadStatus is UpdateUtil.DownloadStatus.Finished) {
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -108,7 +108,7 @@ fun AppUpdater() {
                             }
                     }
             },
-            releaseNote = latestRelease.body.toString(),
+            releaseNote = release.body.toString(),
             downloadStatus = currentDownloadStatus,
         )
     }

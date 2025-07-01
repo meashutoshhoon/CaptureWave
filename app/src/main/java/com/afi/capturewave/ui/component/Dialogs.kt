@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -188,98 +187,6 @@ val BottomButtonShape = RoundedCornerShape(
     bottomStart = 12.dp,
     bottomEnd = 12.dp
 )
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CWDialogVariant(
-    onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier,
-    buttons: @Composable (() -> Unit)? = null,
-    icon: @Composable (() -> Unit)? = null,
-    title: @Composable (() -> Unit)? = null,
-    text: @Composable (() -> Unit)? = null,
-    shape: Shape = AlertDialogDefaults.shape,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
-    iconContentColor: Color = AlertDialogDefaults.iconContentColor,
-    titleContentColor: Color = AlertDialogDefaults.titleContentColor,
-    textContentColor: Color = AlertDialogDefaults.textContentColor,
-    tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
-    properties: DialogProperties = DialogProperties()
-) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        modifier = modifier,
-        properties = properties
-    ) {
-        Surface(
-            modifier = modifier,
-            shape = shape,
-            color = containerColor,
-            tonalElevation = tonalElevation,
-        ) {
-            Column(
-                modifier = Modifier.padding(DialogVerticalPadding)
-            ) {
-                icon?.let {
-                    CompositionLocalProvider(LocalContentColor provides iconContentColor) {
-                        Box(
-                            Modifier
-                                .padding(IconPadding)
-                                .padding(DialogHorizontalPadding)
-                                .align(Alignment.CenterHorizontally)
-                        ) {
-                            icon()
-                        }
-                    }
-                }
-                title?.let {
-                    CompositionLocalProvider(LocalContentColor provides titleContentColor) {
-                        val textStyle = MaterialTheme.typography.headlineSmall
-                        ProvideTextStyle(textStyle.copy(textAlign = TextAlign.Center)) {
-                            Box(
-                                // Align the title to the center when an icon is present.
-                                Modifier
-                                    .padding(TitlePadding)
-                                    .padding(DialogHorizontalPadding)
-                                    .align(
-                                        if (icon == null) {
-                                            Alignment.Start
-                                        } else {
-                                            Alignment.CenterHorizontally
-                                        }
-                                    )
-                            ) {
-                                title()
-                            }
-                        }
-                    }
-                }
-                text?.let {
-                    CompositionLocalProvider(LocalContentColor provides textContentColor) {
-                        val textStyle =
-                            MaterialTheme.typography.bodyMedium
-                        ProvideTextStyle(textStyle) {
-                            Box(
-                                Modifier
-                                    .weight(weight = 1f, fill = false)
-                                    .padding(TextPadding)
-                                    .align(Alignment.Start)
-                            ) {
-                                text()
-                            }
-                        }
-                    }
-                }
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.padding(DialogHorizontalPadding)
-                ) {
-                    buttons?.invoke()
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun DialogSubtitle(

@@ -1,13 +1,13 @@
 package com.afi.capturewave.ui.pages.home
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.afi.capturewave.enums.RecorderState
 import com.afi.capturewave.ui.models.RecorderModel
@@ -16,7 +16,7 @@ import com.afi.capturewave.ui.models.RecorderModel
 fun RecorderView(
     recordScreenMode: Boolean
 ) {
-    val recorderModel: RecorderModel = viewModel(LocalContext.current as ComponentActivity)
+    val recorderModel: RecorderModel = viewModel(LocalActivity.current as ComponentActivity)
 
     LaunchedEffect(recorderModel.recorderState) {
         if (recorderModel.recorderState == RecorderState.IDLE) {
